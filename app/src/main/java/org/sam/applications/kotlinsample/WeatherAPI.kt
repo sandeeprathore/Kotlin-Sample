@@ -1,0 +1,22 @@
+package org.sam.applications.kotlinsample
+
+import com.google.gson.Gson
+import java.net.URL
+
+
+class WeatherApi(val zipCode: Long) {
+
+    companion object {
+        val IMAGE_URL = "http://openweathermap.org/img/w/%s.png"
+    }
+
+    val BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=metric&cnt=7"
+    val APP_ID = "27345e3e20086824ccb7250e8e118b6c"
+    val FULL_URL = "$BASE_URL&appid=$APP_ID&q="
+
+    fun execute(): ForecastResult {
+        //verbose { FULL_URL + zipCode }
+        val jsonResponse = URL(FULL_URL + zipCode).readText()
+        return Gson().fromJson(jsonResponse, ForecastResult::class.java)
+    }
+}
